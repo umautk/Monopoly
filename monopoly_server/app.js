@@ -41,7 +41,7 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-var server = app.listen(8080, "127.0.0.1", function() {
+var server = app.listen(8080, function() {
   console.log("サーバー起動");
 });
 
