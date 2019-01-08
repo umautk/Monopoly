@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var io = require('socket.io')();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -39,3 +40,24 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+var server = app.listen(8080, "127.0.0.1", function() {
+  console.log("サーバー起動");
+});
+
+// socket.ioを設定
+io.attach(server);
+
+io.sockets.on('connection', function(socket) {
+  console.log("接続されました");
+  io.emit('message', '接続完了してまーす');
+
+  socket.on('disconnect', function() {
+    console.log("切断されました");
+  });
+
+  socket.on('message', (message) => {
+    console.log("メッセージ受信");
+    io.emit('message', message);
+  });
+});
