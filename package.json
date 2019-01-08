@@ -1,0 +1,25 @@
+{
+  "name": "monopoly_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umautk/Monopoly.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/umautk/Monopoly/issues"
+  },
+  "homepage": "https://github.com/umautk/Monopoly#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-generator": "^4.16.0",
+    "forever": "^0.15.3",
+    "socket.io": "^2.2.0"
+  }
+}
