@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var io = require('socket.io')();
+var Player = require('./player.js');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -60,4 +61,36 @@ io.sockets.on('connection', function(socket) {
     console.log("メッセージ受信");
     io.emit('message', message);
   });
+
+  socket.on('move', ()=>{
+    console.log("駒を動かします");
+    move();
+    var msg = {name:"", dst:""};
+    io.emit('move', msg);
+  });
 });
+
+//駒を動かす
+function move(){
+  var res = diceRoll();
+  if(res == 0){
+    //現在のマスの処理
+    return res;
+  }
+  //コマを進める処理
+  //movePlayer(res, プレイヤーの番号？);
+  return res;
+}
+
+function diceRoll(){
+  var dice1 = getDiceVal();
+  var dice2 = getDiceVal();
+  if(dice1 == dice2){
+    return 0;
+  }
+  return dice1 + dice2;
+}
+//1~6までの値を返す
+function getDiceVal(){
+  return Math.floor( Math.random() * 6) + 1;
+}
