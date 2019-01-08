@@ -49,9 +49,21 @@ var server = app.listen(8080, function() {
 // socket.ioを設定
 io.attach(server);
 
+var store = [[],[],[],[],[],[],[],[],[]];
 io.sockets.on('connection', function(socket) {
   console.log("接続されました");
   io.emit('message', '接続完了してまーす');
+
+  // Join to room and store users
+  socket.on('join',function(msg){
+    usrobj = {
+      'room':msg.roomid,
+      'name':msg.name,
+      "id":socket.id
+    };
+    store[msg.roomid].push(usrobj);
+    socket.join(msg.roomid);
+  })
 
   socket.on('disconnect', function() {
     console.log("切断されました");
