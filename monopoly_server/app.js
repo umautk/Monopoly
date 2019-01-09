@@ -78,7 +78,7 @@ io.sockets.on('connection', function(socket) {
     console.log("駒を動かします");
     move();
     var msg = {name:"", dst:""};
-    io.emit('move', msg);
+    io.emit('move', msg);//全員に位置を送信(イベント情報も？)
   });
 });
 
@@ -87,11 +87,9 @@ function move(){
   var res = diceRoll();
   if(res == 0){
     //現在のマスの処理
-    return res;
   }
   //コマを進める処理
   //movePlayer(res, プレイヤーの番号？);
-  return res;
 }
 
 function diceRoll(){
