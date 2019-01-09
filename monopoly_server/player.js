@@ -33,6 +33,9 @@ module.exports = class Player{
     addMoney(val){
         this.money += val;
     }
+    payMoney(val){
+        this.money -= val;
+    }
     setState(val){
         this.state = val;
     }

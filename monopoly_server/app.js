@@ -54,6 +54,15 @@ io.sockets.on('connection', function(socket) {
   console.log("接続されました");
   io.emit('message', '接続完了してまーす');
 
+  // Shake the dice and move
+  socket.on('move', ()=>{
+    console.log("駒を動かします");
+    move(socket.id);
+    var msg = {name:"", dst:""};
+    console.log(store[socket.id].player.getPos());
+    io.emit('move', msg);//全員に位置を送信(イベント情報も？)
+  });
+
   // Join to room and store users
   socket.on('join',function(msg){
     usrobj = {
@@ -67,6 +76,30 @@ io.sockets.on('connection', function(socket) {
     socket.join(msg.roomid);
   })
 
+  socket.on('purchase',(msg)=>{});
+
+  socket.on('pay',(msg)=>{
+    store[socket.id].payMoney(msg.val);
+  });
+
+  socket.on('sell',(msg)=>{});
+
+  socket.on('getAllData',()=>{});
+
+  socket.on('build',(msg)=>{});
+
+  socket.on('mortgage',(msg)=>{});
+
+  socket.on('out_prison',()=>{});
+
+  socket.on('log',(msg)=>{});
+
+  socket.on('allLog',()=>{});
+
+  socket.on('end_turn',()=>{});
+
+  socket.on('ready',()=>{});
+
   socket.on('disconnect', function() {
     console.log("切断されました");
   });
@@ -76,13 +109,6 @@ io.sockets.on('connection', function(socket) {
     io.emit('message', message);
   });
 
-  socket.on('move', ()=>{
-    console.log("駒を動かします");
-    move(socket.id);
-    var msg = {name:"", dst:""};
-    console.log(store[socket.id].player.getPos());
-    io.emit('move', msg);//全員に位置を送信(イベント情報も？)
-  });
 });
 
 //駒を動かす
