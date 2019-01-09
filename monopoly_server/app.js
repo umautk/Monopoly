@@ -49,7 +49,7 @@ var server = app.listen(8080, function() {
 // socket.ioを設定
 io.attach(server);
 
-var store = [[],[],[],[],[],[],[],[],[]];
+var store = {};
 io.sockets.on('connection', function(socket) {
   console.log("接続されました");
   io.emit('message', '接続完了してまーす');
@@ -58,10 +58,12 @@ io.sockets.on('connection', function(socket) {
   socket.on('join',function(msg){
     usrobj = {
       'room':msg.roomid,
-      'name':msg.name,
-      "id":socket.id
+      'player':new Player(msg.name,socket.id)
     };
-    store[msg.roomid].push(usrobj);
+    store[socket.id] = usrobj;
+    console.log(store[socket.id].player.getPos());
+    move(socket.id);
+    console.log(store[socket.id].player.getPos());
     socket.join(msg.roomid);
   })
 
@@ -76,27 +78,33 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('move', ()=>{
     console.log("駒を動かします");
-    move();
+    move(socket.id);
     var msg = {name:"", dst:""};
+    console.log(store[socket.id].player.getPos());
     io.emit('move', msg);//全員に位置を送信(イベント情報も？)
   });
 });
 
 //駒を動かす
-function move(){
+function move(sessionid){
   var res = diceRoll();
-  if(res == 0){
+  if(res > 100){
     //現在のマスの処理
+    store[sessionid].player.addPos(Math.floor(res/100));
+    console.log("Double");
   }
-  //コマを進める処理
-  //movePlayer(res, プレイヤーの番号？);
+  else {
+    //コマを進める処理
+    store[sessionid].player.addPos(res);
+    //movePlayer(res, プレイヤーの番号？);
+  }
 }
 
 function diceRoll(){
   var dice1 = getDiceVal();
   var dice2 = getDiceVal();
   if(dice1 == dice2){
-    return 0;
+    return (dice1+dice2)*100;
   }
   return dice1 + dice2;
 }

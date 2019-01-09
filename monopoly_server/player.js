@@ -4,11 +4,12 @@ module.exports = class Player{
          this.id = id;
          this.pos = 0;
          this.money = 1500;
+         this.status = "Watcher";
     }
     getId (){
         return this.id;
     }
-    getNmae(){
+    getName(){
         return this.name;
     }
     getPos(){
@@ -17,10 +18,22 @@ module.exports = class Player{
     setPos(val){
         this.pos = val;
     }
+    addPos(val){
+        this.pos += val;
+        if ( this.pos > 39 ){
+            this.pos -= 40;
+        }
+    }
     getMoney(){
         return this.money;
     }
     setMoney(val){
         this.money = val;
+    }
+    addMoney(val){
+        this.money += val;
+    }
+    setState(val){
+        this.state = val;
     }
 }
